@@ -12,7 +12,7 @@ enterUsermode:
     mov gs, bx
 
     sub ecx, 4
-    mov [ecx], edx        ; push arg for cdecl main(api)
+    ; mov [ecx], edx        ; push arg for cdecl main(api)
     sub ecx, 4
     mov dword [ecx], 0    ; dummy return addr — never used, _start calls _exit
 

@@ -172,7 +172,7 @@ void fault(struct Registers *r) {
     fmtWrite("EAX: 0x%08x EBX: 0x%08x\nECX: 0x%08x EDX: 0x%08x\n", r->eax, r->ebx, r->ecx, r->edx);
     fmtWrite("EDI: 0x%08x ESI: 0x%08x\nEBP: 0x%08x ESP: 0x%08x\n", r->edi, r->esi, r->ebp, r->esp);
 
-    fmtWrite("\n\nSystem Halted.");
+    fmtWrite("\n\nSystem halted.");
 
     // in case fmtWrite fails
     uint16_t *vga = (uint16_t*)0xB8000;

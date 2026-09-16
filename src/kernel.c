@@ -10,6 +10,7 @@
 #include "gdt.h"
 #include "ata.h"
 #include "ustar.h"
+#include "paging.h"
 #include "api.h"
 #include "version.h"
 #include "mem.h"
@@ -48,6 +49,7 @@ void kmain(unsigned int entryCount, struct E820Entry* entries) {
     init(ataIdentify(), "ATA");
     init(tarLoad(), "tar driver");
     init(initTimer(100), "timer");
+    init(initPaging(), "pager");
 
     api.fmtWrite  = fmtWrite;
     api.fmtGet    = fmtGet;

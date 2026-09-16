@@ -49,7 +49,7 @@ $(IMG): src $(BOOT_BIN) $(KERNEL_BIN)
 	rm -rf hello.txt hello folder archive.tar
 
 run: $(IMG)
-	qemu-system-i386 -drive format=raw,file=$(IMG),index=0,if=ide -m 64 #-display curses
+	qemu-system-i386 -drive format=raw,file=$(IMG),index=0,if=ide -m 64 -machine pc #-display curses
 
 debug: $(IMG)
 	qemu-system-i386 -drive format=raw,file=$(IMG),index=0,if=ide -m 16 -s -S #-display curses

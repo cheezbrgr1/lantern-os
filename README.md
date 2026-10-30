@@ -3,10 +3,7 @@ LanternOS is a hobbyist OS and kernel made by me to explore how OS's work. It cu
 
 ## Building
 ### Prereqs
-- An `i686-elf` cross toolchain with picolibc (prefferably, native toolchains can also be used, i think...)
-    - `gcc` w/c99+ support
-    - `ld`
-    - `objcopy`
+- An LLVM toolchain (should support `i686-elf`)
 - `nasm`
 - `make`
 - `qemu-system-i386` (if you want to test out the built image)
@@ -16,15 +13,17 @@ To build, simply run
 make
 ```
 To run the image in qemu, run
-```
+```sh
 make run
 ```
 ### Windows
 Not supported :sob:
-## Goals for v0.0.2
-- Migrate from newlib to picolibc
-- Decent picolibc support (such as basic i/o functions, math/string parsing functions, etc.)
-- POSIX-like read/write interface
+### MacOS
+Haven't tested
+## Goals for v0.0.3
+- Get into ring 3
+- Add paging
+- Basic multitasking
 ## TODO
-- Add native apps
+- Better bootloader
 - GUI (maybe?)

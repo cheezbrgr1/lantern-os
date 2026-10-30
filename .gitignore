@@ -9,3 +9,5 @@
 /.vscode
 /*.tar
 /AGENTS.md
+/.cache/
+**/compile_commands.json

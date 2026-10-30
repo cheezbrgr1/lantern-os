@@ -1,21 +1,23 @@
 include ../src/settings.mk
-# App compiler flags
-APP_CFLAGS := -m32 -ffreestanding -fno-stack-protector -fno-pic \
-              -fno-leading-underscore -std=c99 -Wall -Wextra -U__TLS -fcommon \
+
+# Application compiler flags
+APP_CFLAGS := -ffreestanding -fno-stack-protector \
+              -fno-pic -fno-pie \
+              -std=c99 -Wall -Wextra -U__TLS -fcommon \
               -I$(shell pwd)/../include -I$(INCLUDE_PATH)
 
-# App linker flags – use our own linker script, no spec file
-APP_LDFLAGS := -nostdlib -nostartfiles \
+# Application linker flags
+APP_LDFLAGS := -fuse-ld=lld -nostdlib -no-pie \
                -Wl,-m,elf_i386 -Wl,-T,app.ld -Wl,-e,_start \
-               -L$(LIBC_PATH) -lc -lgcc -lm
+               -L$(LIBC_PATH)
 
 STUB_SRC    := app_stub.c
 STUB_OBJ    := app_stub.o
 SYSCALL_SRC := user_syscalls.c
 SYSCALL_OBJ := user_syscalls.o
 
-# Every .c file except the two "runtime" files becomes its own app.elf
-APP_SRCS := $(filter-out $(STUB_SRC) $(SYSCALL_SRC), $(wildcard *.c))
+# Every C file except the runtime files becomes an application
+APP_SRCS := $(filter-out $(STUB_SRC) $(SYSCALL_SRC),$(wildcard *.c))
 APP_OBJS := $(APP_SRCS:.c=.o)
 APP_ELFS := $(APP_OBJS:.o=.elf)
 
@@ -30,9 +32,11 @@ $(SYSCALL_OBJ): $(SYSCALL_SRC)
 %.o: %.c
 	$(CC) $(APP_CFLAGS) -c $< -o $@
 
-# do NOT include app.ld in $^ (it's passed via -T)
+# Link objects first, then libraries.
 %.elf: %.o $(STUB_OBJ) $(SYSCALL_OBJ)
-	$(LD) -o $@ $^ $(APP_LDFLAGS)
+	$(LD) $(APP_LDFLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	rm -f $(STUB_OBJ) $(SYSCALL_OBJ) $(APP_OBJS) $(APP_ELFS)
+
+.PHONY: all clean
